@@ -1,5 +1,5 @@
 function getAirlineById(id) {
-  return airlines.find( (airline) => airline.id == id );
+  return airlines.find( (airline) => airline.id === id );
 }
 
 function getAirportByCode(code) {

@@ -2,32 +2,25 @@ import React, { Component } from 'react';
 import './App.css';
 
 import RouteData, { getAirlineById, getAirportByCode } from './data.js';
-
-const AirlineRouteTableRow = ( { route } ) => {
-  return (
-    <tr>
-      <td>{getAirlineById(route.airline).name}</td>
-      <td>{getAirportByCode(route.src).name}</td>
-      <td>{getAirportByCode(route.dest).name}</td>
-    </tr>
-  )
-}
-
-const AirlineRoutesTable = ( { routes } ) => {
-  return (
-    <table>
-      <tr>
-        <th>Airline</th>
-        <th>Source Airport</th>
-        <th>Destination Airport</th>
-      </tr>
-      {routes.map((route) => <AirlineRouteTableRow route={route} /> )}
-    </table>
-  );
-};
+import Table from './Table';
 
 class App extends Component {
+
+  formatValue(property, value) {
+    if (property === 'airline') {
+      return getAirlineById(value).name;
+    } else {
+      return getAirportByCode(value).name;
+    }
+  }
+
   render() {
+    const columns = [
+      {name: 'Airline', property: 'airline'},
+      {name: 'Source Airport', property: 'src'},
+      {name: 'Destination Airport', property: 'dest'},
+    ];
+
     return (
       <div className="app">
         <header className="header">
@@ -37,8 +30,11 @@ class App extends Component {
           <p>
             Welcome to the app!
           </p>
-          <AirlineRoutesTable
-            routes={RouteData.routes}
+          <Table
+            className="routes-table"
+            columns={columns}
+            rows={RouteData.routes}
+            format={this.formatValue}
           />
         </section>
       </div>
