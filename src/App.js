@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import RouteData from './data.js';
+import RouteData, { getAirlineById, getAirportByCode } from './data.js';
 
 const AirlineRouteTableRow = ( { route } ) => {
   return (
     <tr>
-      <td>{route.airline}</td>
-      <td>{route.src}</td>
-      <td>{route.dest}</td>
+      <td>{getAirlineById(route.airline).name}</td>
+      <td>{getAirportByCode(route.src).name}</td>
+      <td>{getAirportByCode(route.dest).name}</td>
     </tr>
   )
 }
