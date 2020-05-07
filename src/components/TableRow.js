@@ -2,7 +2,7 @@ import React from 'react';
 
 const TableRow = ( { columnTypes, route, format } ) => {
   return (
-    <tr>
+    <tr key={Object.values(route).join(':')}>
       {columnTypes.map((columnType) => {
         const columnValue = route[columnType.property];
         return <td key={ columnType.property + columnValue }>
