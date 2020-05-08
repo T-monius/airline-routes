@@ -41,13 +41,47 @@ class App extends Component {
     }).id;
   };
 
+  filterRoutesByAirport = (selectedAirportName) => {
+    if (selectedAirportName === 'all_airports') { return RouteData.routes };
+
+    const airportCode = this.findAirportCodeFromName(selectedAirportName);
+
+    return RouteData.routes.filter((route) => {
+      return route.src === airportCode || route.dest === airportCode;
+    })
+  };
+
+  findAirportCodeFromName = (selectedAirportName) => {
+    return RouteData.airports.find((airport) => {
+      return airport.name === selectedAirportName;
+    }).code;
+  };
+
   totalRoutes = () => {
     return this.state.routes.length;
+  };
+
+  sortByName = (airport, airport1) => {
+    const name = airport.name.toLowerCase();
+    const name1 = airport1.name.toLowerCase();
+    if (name < name1) {
+      return -1;
+    } else if (name > name1) {
+      return 1;
+    } else {
+      return 0;
+    }
   };
 
   handleAirlineSelection = (e) => {
     const selectedAirlineName = e.target.value;
     const selectedRoutes = this.filterRoutesByAirline(selectedAirlineName);
+    this.setState({ routes: selectedRoutes });
+  };
+
+  handleAirportSelection = (e) => {
+    const selectedAirportName = e.target.value;
+    const selectedRoutes = this.filterRoutesByAirport(selectedAirportName);
     this.setState({ routes: selectedRoutes });
   };
 
@@ -84,6 +118,14 @@ class App extends Component {
               onChange={this.handleAirlineSelection}
               allTitle={'All Airlines'}
               titleKey={'all_airlines'}
+              value={'name'}
+              valueKey={'name'}
+            />
+            <Select
+              options={[...RouteData.airports].sort(this.sortByName)}
+              onChange={this.handleAirportSelection}
+              allTitle={'All Airports'}
+              titleKey={'all_airports'}
               value={'name'}
               valueKey={'name'}
             />
