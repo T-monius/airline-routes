@@ -3,6 +3,7 @@ import './App.css';
 
 import RouteData, { getAirlineById, getAirportByCode } from './data.js';
 import Table from './components/Table';
+import Select from './components/Select';
 
 class App extends Component {
   state = {
@@ -25,7 +26,7 @@ class App extends Component {
   };
 
   filterRoutesByAirline = (selectedAirlineName) => {
-    if (selectedAirlineName === 'all') { return RouteData.routes }
+    if (selectedAirlineName === 'all_airlines') { return RouteData.routes }
 
     const selectedAirlineId = this.findAirlineIdFromName(selectedAirlineName);
 
@@ -45,8 +46,8 @@ class App extends Component {
   };
 
   handleAirlineSelection = (e) => {
-    const selectedAirline = e.target.value;
-    const selectedRoutes = this.filterRoutesByAirline(selectedAirline);
+    const selectedAirlineName = e.target.value;
+    const selectedRoutes = this.filterRoutesByAirline(selectedAirlineName);
     this.setState({ routes: selectedRoutes });
   };
 
@@ -78,17 +79,14 @@ class App extends Component {
         </header>
         <section>
           <form>
-            <select onChange={this.handleAirlineSelection}>
-              <option key='all' value='all'>All Airlines</option>
-              {RouteData.airlines.map((airline, idx) => {
-                return <option 
-                         key={airline.name}
-                         value={airline.name}
-                       >
-                         {airline.name}
-                       </option>
-              })}
-            </select>
+            <Select
+              options={RouteData.airlines}
+              onChange={this.handleAirlineSelection}
+              allTitle={'All Airlines'}
+              titleKey={'all_airlines'}
+              value={'name'}
+              valueKey={'name'}
+            />
           </form>
           <Table
             columns={columns}
