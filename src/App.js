@@ -57,6 +57,10 @@ class App extends Component {
     }).code;
   };
 
+  showAllRoutes = (_) => {
+    this.setState({ routes: RouteData.routes });
+  };
+
   totalRoutes = () => {
     return this.state.routes.length;
   };
@@ -129,6 +133,7 @@ class App extends Component {
               value={'name'}
               valueKey={'name'}
             />
+            <button type='reset' onClick={this.showAllRoutes}>Show All Routes</button>
           </form>
           <Table
             columns={columns}
