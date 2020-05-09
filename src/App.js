@@ -103,6 +103,18 @@ class App extends Component {
     });
   };
 
+  isCompatibleAirline = (airlineId) => {
+    return this.state.routes.find((route) => {
+      return route.airline === airlineId;
+    });
+  };
+
+  isCompatibleAirport = (airportCode) => {
+    return this.state.routes.find((route) => {
+      return route.src === airportCode || route.dest === airportCode;
+    });
+  };
+
   render() {
     const columns = [
       {name: 'Airline', property: 'airline'},
@@ -119,19 +131,21 @@ class App extends Component {
           <form>
             <Select
               options={RouteData.airlines}
+              compatible={this.isCompatibleAirline}
               onChange={this.handleAirlineSelection}
               allTitle={'All Airlines'}
               titleKey={'all_airlines'}
               value={'name'}
-              valueKey={'name'}
+              valueKey={'id'}
             />
             <Select
               options={[...RouteData.airports].sort(this.sortByName)}
+              compatible={this.isCompatibleAirport}
               onChange={this.handleAirportSelection}
               allTitle={'All Airports'}
               titleKey={'all_airports'}
               value={'name'}
-              valueKey={'name'}
+              valueKey={'code'}
             />
             <button type='reset' onClick={this.showAllRoutes}>Show All Routes</button>
           </form>
